@@ -13,12 +13,10 @@
 
 ## 📁 디렉토리 구조
 ```
-/data_structure/
-│── week1/
-│   ├── week1_theory.md      # 1주차 이론 자료
-│── week2/
-│   ├── week2_theory.md      # 2주차 이론 자료
-│   ├── week2_practice.md    # 2주차 실습 자료
+│── weekX/
+|   │── weekX_theory.md                    # 해당 주차의 이론을 정리한 Markdown파일
+|   │── weekX_practice.md                  # 해당 주차의 실습들을 정리한 Markdwon 파일
+|   │── weekX_theory / weekX_practice.pdf  # 해당 주차의 이론 및 실습을 정리한 Pdf 파일
 ```
 
 ## 📝 학습 내용
