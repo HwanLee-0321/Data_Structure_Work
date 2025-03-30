@@ -346,3 +346,299 @@
 //     return 0;
 // }
 
+// // 프로그램 4.7
+// // 후위표기식 계산
+// #define MAX_STACK_SIZE 100
+
+// typedef char element;
+// typedef struct {
+//     element *data;
+//     int capacity;
+//     int top;
+// } StackType;
+
+// // 스택 생성 함수
+// void init_stack(StackType *s) {
+//     s->top = -1;
+//     s->capacity = 1;
+//     s->data = (element *)malloc(s->capacity * sizeof(element));
+// }
+
+// // 공백 상태 검출 함수
+// int is_empty(StackType *s) {
+//     return (s->top == -1);
+// }
+
+// // 포화 상태 검출 함수
+// int is_full(StackType *s) {
+//     return (s->top == (s->capacity - 1));
+// }
+
+// // 삽입 함수
+// void push(StackType *s, element item) {
+//     if (is_full(s)) {
+//         s->capacity *= 2;
+//         s->data = (element *)realloc(s->data, s->capacity * sizeof(element));
+//     }
+//     s->data[++(s->top)] = item;
+// }
+
+// // 삭제 함수
+// element pop(StackType *s) {
+//     if (is_empty(s)) {
+//         fprintf(stderr, "스택 공백 에러\n");
+//         exit(1);  // 함수가 반환형이 있으므로 반드시 종료 또는 유효값 반환 필요
+//     }
+//     return s->data[(s->top)--];
+// }
+
+// // 후위 표기 수식 계산 함수
+// int eval(char exp[]){
+//     int op1, op2, value, i = 0;
+//     int len = strlen(exp);
+//     char ch;
+//     StackType s;
+
+//     init_stack(&s);
+//     for (i=0;i<len;i++){
+//         ch = exp[i];
+//         if (ch != '+' && ch !='-' && ch != '*' && ch != '/' ){
+//             value = ch - '0';
+//             push(&s, value);
+//         } else {
+//             op2 = pop(&s);
+//             op1 = pop(&s);
+//             switch (ch)
+//             {
+//             case '+': push(&s, op1 + op2); break;
+//             case '-': push(&s, op1 - op2); break;
+//             case '*': push(&s, op1 * op2); break;
+//             case '/': push(&s, op1 / op2); break;
+//             }
+//         }
+//     }
+//     return pop(&s);
+// }
+
+// int main(){
+//     int result;
+//     printf("후위표기식은 82/3-32*+\n");
+//     result = eval("82/3-32*+");
+//     printf("결과값은 %d\n",result);
+//     return 0;
+// }
+
+// // 프로그램 4.8
+// // 중위 표기 수식을 후위 표기 수식으로 변환하는 프로그램
+// #define MAX_STACK_SIZE 100
+
+// typedef char element;
+// typedef struct {
+//     element *data;
+//     int capacity;
+//     int top;
+// } StackType;
+
+// void init_stack(StackType *s) {
+//     s->top = -1;
+//     s->capacity = 1;
+//     s->data = (element *)malloc(s->capacity * sizeof(element));
+// }
+
+// int is_empty(StackType *s) {
+//     return (s->top == -1);
+// }
+
+// int is_full(StackType *s) {
+//     return (s->top == (s->capacity - 1));
+// }
+
+// void push(StackType *s, element item) {
+//     if (is_full(s)) {
+//         s->capacity *= 2;
+//         s->data = (element *)realloc(s->data, s->capacity * sizeof(element));
+//     }
+//     s->data[++(s->top)] = item;
+// }
+
+// element pop(StackType *s) {
+//     if (is_empty(s)) {
+//         fprintf(stderr, "스택 공백 에러\n");
+//         exit(1);
+//     }
+//     return s->data[(s->top)--];
+// }
+
+// element peek(StackType *s) {
+//     if (is_empty(s)) {
+//         fprintf(stderr, "스택 공백 에러 (peek)\n");
+//         exit(1);
+//     }
+//     return s->data[s->top];
+// }
+
+// int prec(char op) {
+//     switch (op) {
+//         case '(': case ')': return 0;
+//         case '+': case '-': return 1;
+//         case '*': case '/': return 2;
+//     }
+//     return -1;
+// }
+
+// void infix_to_postfix(char exp[]) {
+//     int i;
+//     char ch, top_op;
+//     int len = strlen(exp);
+//     StackType s;
+
+//     init_stack(&s);
+//     for (i = 0; i < len; i++) {
+//         ch = exp[i];
+//         switch (ch) {
+//             case '+': case '-': case '*': case '/':
+//                 while (!is_empty(&s) && (prec(ch) <= prec(peek(&s))))
+//                     printf("%c", pop(&s));
+//                 push(&s, ch);
+//                 break;
+//             case '(':
+//                 push(&s, ch);
+//                 break;
+//             case ')':
+//                 top_op = pop(&s);
+//                 while (top_op != '(') {
+//                     printf("%c", top_op);
+//                     top_op = pop(&s);
+//                 }
+//                 break;
+//             default:
+//                 printf("%c", ch);
+//                 break;
+//         }
+//     }
+//     while (!is_empty(&s))
+//         printf("%c", pop(&s));
+// }
+
+// int main() {
+//     char *s = "(2+3)*4+9";
+//     printf("중위표시수식: %s\n", s);
+//     printf("후위표기수식: ");
+//     infix_to_postfix(s);
+//     printf("\n");
+//     return 0;
+// }
+
+// // 프로그램 4.9
+// // 미로탐색 프로그램
+// #include <stdio.h>
+// #include <stdlib.h>
+
+// #define MAX_SIZE 6
+
+// typedef struct {
+//     short r;
+//     short c;
+// } element;
+
+// typedef struct {
+//     element *data;
+//     int capacity;
+//     int top;
+// } StackType;
+
+// void init_stack(StackType *s) {
+//     s->top = -1;
+//     s->capacity = 1;
+//     s->data = (element *)malloc(s->capacity * sizeof(element));
+// }
+
+// int is_empty(StackType *s) {
+//     return (s->top == -1);
+// }
+
+// int is_full(StackType *s) {
+//     return (s->top == (s->capacity - 1));
+// }
+
+// void push(StackType *s, element item) {
+//     if (is_full(s)) {
+//         s->capacity *= 2;
+//         s->data = (element *)realloc(s->data, s->capacity * sizeof(element));
+//     }
+//     s->data[++(s->top)] = item;
+// }
+
+// element pop(StackType *s) {
+//     if (is_empty(s)) {
+//         fprintf(stderr, "스택 공백 에러\n");
+//         exit(1);
+//     }
+//     return s->data[(s->top)--];
+// }
+
+// element peek(StackType *s) {
+//     if (is_empty(s)) {
+//         fprintf(stderr, "스택 공백 에러 (peek)\n");
+//         exit(1);
+//     }
+//     return s->data[s->top];
+// }
+
+// element here = {1, 0}, entry = {1, 0};
+
+// char maze[MAX_SIZE][MAX_SIZE] = {
+//     {'1', '1', '1', '1', '1', '1'},
+//     {'e', '0', '1', '0', '0', '1'},
+//     {'1', '0', '0', '0', '1', '1'},
+//     {'1', '0', '1', '0', '1', '1'},
+//     {'1', '0', '1', '0', '0', 'x'},
+//     {'1', '1', '1', '1', '1', '1'},
+// };
+
+// void push_loc(StackType *s, int r, int c) {
+//     if (r < 0 || c < 0 || r >= MAX_SIZE || c >= MAX_SIZE) return;
+//     if (maze[r][c] != '1' && maze[r][c] != '.') {
+//         element tmp = {r, c};
+//         push(s, tmp);
+//     }
+// }
+
+// void maze_print(char maze[MAX_SIZE][MAX_SIZE]) {
+//     printf("\n");
+//     for (int r = 0; r < MAX_SIZE; r++) {
+//         for (int c = 0; c < MAX_SIZE; c++) {
+//             printf("%c", maze[r][c]);
+//         }
+//         printf("\n");
+//     }
+// }
+
+// int main() {
+//     int r, c;
+//     StackType s;
+//     init_stack(&s);
+//     here = entry;
+
+//     while (maze[here.r][here.c] != 'x') {
+//         r = here.r;
+//         c = here.c;
+//         maze[r][c] = '.';
+//         maze_print(maze);
+//         push_loc(&s, r - 1, c);  // 상
+//         push_loc(&s, r + 1, c);  // 하
+//         push_loc(&s, r, c - 1);  // 좌
+//         push_loc(&s, r, c + 1);  // 우
+
+//         if (is_empty(&s)) {
+//             printf("실패\n");
+//             return 0;
+//         } else {
+//             here = pop(&s);
+//         }
+//     }
+
+//     maze_print(maze);
+//     printf("성공\n");
+//     return 0;
+// }
